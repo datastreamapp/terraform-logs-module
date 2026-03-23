@@ -71,6 +71,17 @@ resource "aws_s3_bucket_lifecycle_configuration" "default" {
   }
 
   rule {
+    id     = "noncurrent-versions"
+    status = "Enabled"
+
+    filter {}
+
+    noncurrent_version_expiration {
+      noncurrent_days = 1
+    }
+  }
+
+  rule {
     id     = "delete-markers"
     status = "Enabled"
 
