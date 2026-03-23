@@ -53,6 +53,33 @@ resource "aws_s3_bucket_lifecycle_configuration" "default" {
       days = var.expiration_days
     }
   }
+
+  dynamic "rule" {
+    for_each = var.lifecycle_rules
+    content {
+      id     = rule.value.id
+      status = "Enabled"
+
+      filter {
+        prefix = rule.value.prefix
+      }
+
+      expiration {
+        days = rule.value.expiration_days
+      }
+    }
+  }
+
+  rule {
+    id     = "delete-markers"
+    status = "Enabled"
+
+    filter {}
+
+    expiration {
+      expired_object_delete_marker = true
+    }
+  }
 }
 
 resource "aws_s3_bucket_versioning" "default" {

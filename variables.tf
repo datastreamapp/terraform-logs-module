@@ -35,6 +35,16 @@ variable "kms_key_arn" {
   default = null
 }
 
+variable "lifecycle_rules" {
+  description = "Additional prefix-based lifecycle expiration rules"
+  type = list(object({
+    id              = string
+    prefix          = string
+    expiration_days = number
+  }))
+  default = []
+}
+
 //variable "target_trail" {
 //  type = string
 //}
